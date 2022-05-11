@@ -1,0 +1,119 @@
+﻿<Window x:Class="form.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:form" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="840" Width="1156">
+    <Window.DataContext >
+        <local:FContext x:Name="acontext"/>
+    </Window.DataContext>
+
+    <Grid Margin="0,0,10,19">
+        <Label x:Name="Дата" Content="Дата:" HorizontalAlignment="Left" Margin="936,20,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <DatePicker Text="{Binding CreationDate}" SelectedDate="{x:Static sys:DateTime.Now}"  IsTodayHighlighted ="True" Margin="990,20,0,0" VerticalAlignment="Top" Height="30" FontSize="20" HorizontalAlignment="Left" Width="130"/>
+        <Label x:Name="Огранизация" Content="Организация:" HorizontalAlignment="Left" Margin="21,109,0,0" VerticalAlignment="Top" Height="30" FontSize="15"/>
+        <TextBox x:Name="Ввод_номера_Copy" Text="{Binding Organization}" Margin="146,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="20" HorizontalAlignment="Left" Width="785"/>
+        <Label x:Name="Подразделение" Content="Подразделение:" HorizontalAlignment="Left" Margin="20,144,0,0" VerticalAlignment="Top" Height="30" FontSize="15"/>
+        <TextBox x:Name="Ввод_номера_Copy1" Text="{Binding Struct}"  Margin="146,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="20" HorizontalAlignment="Left" Width="785"/>
+        <syncfusion:SfDataGrid
+            x:Name="table"
+            AddNewRowText="Добавить специю"
+            AllowSorting="False"
+            AllowDeleting="True"
+            AllowEditing="True"
+            AddNewRowPosition="Bottom"
+            AutoGenerateColumns="True"
+            ColumnSizer="Star"
+            Margin="20,194,0,0"
+            ItemsSource="{Binding Spices}"
+            HorizontalAlignment="Left"
+            Width="1100"
+            Height="300"
+            VerticalAlignment="Top">
+
+
+            <syncfusion:SfDataGrid.Columns>
+
+                <syncfusion:GridTemplateColumn MappingName="Name" HeaderText="Наименование">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox   IsEditable="True"
+                                        Width="345"
+                                        Height="25"
+                                        syncfusion:FocusManagerHelper.FocusedElement ="True"
+                                        IsTextSearchEnabled="True"
+                                        IsTextSearchCaseSensitive="False"
+                                        ItemsSource="{Binding Source={x:Static local:Spice.Names}, Mode=OneTime}"
+                                        Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        StaysOpenOnEdit="True"
+                                        MaxDropDownHeight="100"
+                                        >
+                            </ComboBox>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
+
+                <syncfusion:GridTemplateColumn MappingName="Code" HeaderText="Код">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox IsEditable="True"
+                                        Width="345"
+                                        Height="25"
+                                        IsTextSearchEnabled="True"
+                                        syncfusion:FocusManagerHelper.FocusedElement ="True"  
+                                        ItemsSource = "{Binding Source={x:Static local:Spice.Codes}, Mode=OneTime}"
+                                        Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        MaxDropDownHeight="100"
+                                      >
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
+            </syncfusion:SfDataGrid.Columns>
+            <syncfusion:SfDataGrid.DataContext>
+                <local:ViewModel x:Name="context"/>
+            </syncfusion:SfDataGrid.DataContext >
+        </syncfusion:SfDataGrid>
+        <Label x:Name="Код_Copy"  Content="Номер:" HorizontalAlignment="Left" Margin="725,20,0,0" VerticalAlignment="Top" Height="30" FontSize="15" Width="72"/>
+        <TextBox x:Name="number" Text="{Binding Number}" HorizontalAlignment="Left" Margin="802,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" Height="30" FontSize="20" RenderTransformOrigin="4.535,0.551"/>
+        <Label x:Name="Дата_Copy" Content="по:" HorizontalAlignment="Left" Margin="936,70,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <DatePicker SelectedDate="{x:Static sys:DateTime.Now}" Text="{Binding EndDate}"  IsTodayHighlighted ="True" Margin="990,70,0,0" VerticalAlignment="Top" Height="30" FontSize="20" HorizontalAlignment="Left" Width="130"/>
+        <Label x:Name="Дата_Copy1" Content="Расчетный период c:" HorizontalAlignment="Left" Margin="644,70,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <DatePicker SelectedDate="{x:Static sys:DateTime.Now}"  Text="{Binding StartDate}" IsTodayHighlighted ="True" Margin="802,70,0,0" VerticalAlignment="Top" Height="30" FontSize="20" HorizontalAlignment="Left" Width="129"/>
+        <Label x:Name="Код_Copy1" HorizontalContentAlignment="Center" Content="Контрольный расчет расхода специй и соли" HorizontalAlignment="Left" Margin="21,20,0,0" VerticalAlignment="Top" Height="30" FontSize="15" Width="704" FontWeight="Bold"/>
+        <TextBox x:Name="Ввод_номера_Copy3" Margin="990,109,0,0" Text="{Binding OKPO}" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="20" RenderTransformOrigin="4.535,0.551" HorizontalAlignment="Left" Width="129"/>
+        <Label x:Name="Дата_Copy2" Content="ОКПО:" HorizontalAlignment="Left" Margin="936,109,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <TextBox x:Name="Ввод_номера_Copy4" Text="{Binding OKDP}" Margin="991,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="20" RenderTransformOrigin="4.535,0.551" HorizontalAlignment="Left" Width="129"/>
+        <Label x:Name="Дата_Copy3" Content="ОКДП:"  HorizontalAlignment="Left" Margin="936,144,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <syncfusion:SfDataGrid x:Name="tableD"   AllowSorting="False" AllowDeleting="False" AllowEditing="True" AutoGenerateColumns="True" ColumnSizer="Star"  Margin="20,532,0,0" ItemsSource="{Binding Dishes}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="650">
+            <syncfusion:SfDataGrid.DataContext >
+                <local:ViewModelDishes x:Name="dcontext"/>
+            </syncfusion:SfDataGrid.DataContext >
+        </syncfusion:SfDataGrid>
+        <Label x:Name="Код_Copy2" HorizontalContentAlignment="Center" Content="Контрольный расчет расхода специй и соли" HorizontalAlignment="Left" Margin="20,497,0,0" VerticalAlignment="Top" Height="30" FontSize="15" Width="650" FontWeight="Bold"/>
+        <Label x:Name="Дата_Copy5" Content="Бухгалтер:" HorizontalAlignment="Left" Margin="793,651,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <TextBox Text="{Binding EconomName}" x:Name="Ввод_номера_Copy6" Margin="930,651,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="20" RenderTransformOrigin="4.535,0.551" HorizontalAlignment="Left" Width="184"/>
+        <Label x:Name="Дата_Copy8" Content="ФИО:" HorizontalAlignment="Left" Margin="878,651,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <Button Content="Экспорт" HorizontalAlignment="Left" Margin="935,744,0,0" VerticalAlignment="Top" Width="184" Height="30" Click="Button_Click"/>
+        <Label x:Name="Дата_Copy9"  Content="Руководитель:" HorizontalAlignment="Left" Margin="22,651,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <TextBox x:Name="Ввод_номера_Copy2"  Text="{Binding DirectorName}" Margin="225,651,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="20" RenderTransformOrigin="4.535,0.551" HorizontalAlignment="Left" Width="183"/>
+        <TextBox x:Name="Ввод_номера_Copy8"  Text="{Binding DirectorRole}" Margin="225,684,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="20" RenderTransformOrigin="4.535,0.551" HorizontalAlignment="Left" Width="183"/>
+        <Label x:Name="Дата_Copy10" Content="ФИО:" HorizontalAlignment="Left" Margin="173,651,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <Label x:Name="Дата_Copy11" Content="Должность:" HorizontalAlignment="Left" Margin="135,686,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <Label x:Name="Дата_Copy12" Content="Составитель:" HorizontalAlignment="Left" Margin="413,651,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <TextBox x:Name="Ввод_номера_Copy9"  Text="{Binding WorkerName}" Margin="605,651,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="20" RenderTransformOrigin="4.535,0.551" HorizontalAlignment="Left" Width="183"/>
+        <TextBox x:Name="Ввод_номера_Copy10" Text="{Binding WorkerRole}" Margin="605,686,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="20" RenderTransformOrigin="4.535,0.551" HorizontalAlignment="Left" Width="183"/>
+        <Label x:Name="Дата_Copy13" Content="ФИО:" HorizontalAlignment="Left" Margin="516,651,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+        <Label x:Name="Дата_Copy14" Content="Должность:" HorizontalAlignment="Left" Margin="516,686,0,0" VerticalAlignment="Top" Height="30" FontSize="15" RenderTransformOrigin="-0.865,0.535"/>
+
+    </Grid>
+</Window>
